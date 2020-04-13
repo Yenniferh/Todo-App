@@ -21,23 +21,73 @@ class _HomePageTodoState extends State<HomePageTodo> {
     );
   }
 
-  Widget _list(){
-      return ListView.builder(
+  Widget _list() {
+    return ListView.builder(
       itemCount: todos.length,
       itemBuilder: (context, posicion) {
         var element = todos[posicion];
-        return _item(element, posicion);
+        return Dismissible(
+          direction: DismissDirection.endToStart,
+          key: UniqueKey(),
+          child: _item(element, posicion),
+          background: Container(
+            padding: EdgeInsets.only(right: 6.0),
+            alignment: AlignmentDirectional.centerEnd,
+            color: Colors.red[700],
+            child: Text(
+              "Deleting...",
+              style: TextStyle(fontSize: 18.0, color: Colors.white),
+            ),
+          ),
+          onDismissed: (direction) => {
+            setState(() {
+              todos.remove(element);
+            })
+          },
+        );
       },
     );
   }
 
-  Widget _item(Todo element, int posicion){
-    return Text('$posicion');
+  Widget _item(Todo element, int posicion) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
+      child: Card(
+        color: isComplete(element),
+        child: ListTile(
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 3.0, horizontal: 8.0),
+            isThreeLine: true,
+            onTap: () => _onTap(context, element, posicion),
+            title: Text('${element.title.toUpperCase()}',
+                style: Theme.of(context).primaryTextTheme.headline),
+            subtitle: Text(
+              '${element.body}',
+              style: Theme.of(context).primaryTextTheme.subhead,
+            )),
+      ),
+    );
   }
 
-  void _addTodo(){
+  void _addTodo() {
     setState(() {
-      todos.add(new Todo(title:"itemT", body: "itemB", completed: 0 ));
+      todos.add(new Todo(title: "itemT", body: "itemB", completed: 0));
     });
+  }
+
+  void _onTap(BuildContext context, Todo location, int posicion) {
+    setState(() {
+      if (this.todos[posicion].completed == 0) {
+        this.todos[posicion].completed = 1;
+      }
+    });
+  }
+
+  Color isComplete(Todo todo) {
+    if (todo.completed == 0) {
+      return Colors.white;
+    } else {
+      return Colors.grey[300];
+    }
   }
 }
