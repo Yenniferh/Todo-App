@@ -35,7 +35,7 @@ class _HomePageTodoState extends State<HomePageTodo> {
             alignment: AlignmentDirectional.centerEnd,
             color: Colors.red[700],
             child: Text(
-              "Deleting...",
+              "Delete",
               style: TextStyle(fontSize: 18.0, color: Colors.white),
             ),
           ),
@@ -69,11 +69,27 @@ class _HomePageTodoState extends State<HomePageTodo> {
     );
   }
 
-  void _addTodo() {
+  /* void _addTodo() {
     setState(() {
       todos.add(new Todo(title: "itemT", body: "itemB", completed: 0));
     });
+  } */
+  _addTodo() async {
+    final todo = await showDialog<Todo>(
+      context: context,
+      builder: (BuildContext context) {
+        return NewTodoDialog();
+      },
+    );
+
+    if (todo != null) {
+      setState(() {
+        todos.add(todo);
+      });
+    }
   }
+
+
 
   void _onTap(BuildContext context, Todo location, int posicion) {
     setState(() {
@@ -91,3 +107,66 @@ class _HomePageTodoState extends State<HomePageTodo> {
     }
   }
 }
+class NewTodoDialog extends StatefulWidget {
+  @override
+  _NewTodoDialogState createState() => _NewTodoDialogState();
+}
+class _NewTodoDialogState extends State<NewTodoDialog> {
+  final controllerTitle = new TextEditingController();
+  final controllerBody = new TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.yellow[200],
+      title: Text(
+        'New todo',
+        style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),
+      ),
+      content: Column(children: <Widget>[
+        TextField(
+          controller: controllerTitle, 
+         decoration: InputDecoration(
+                     
+                      hintText: 'Title'
+             ),),
+             TextField(
+          controller: controllerBody, 
+         decoration: InputDecoration(
+                     
+                      hintText: 'Body'
+             ),),
+             
+             ]),
+             actions: <Widget>[
+          FlatButton(
+            child: Text('Add'),
+            onPressed: () {
+              if(controllerBody!="" || controllerTitle!=""){
+                  final todo = new Todo(
+                title: controllerTitle.value.text,
+                body: controllerBody.value.text,
+                completed: 0,);
+                Navigator.of(context).pop(todo);
+              }else{
+                Navigator.of(context).pop();
+              }
+              
+            controllerTitle.clear();
+            controllerBody.clear();
+
+            
+
+
+              
+
+
+            },
+          ),
+        ],
+            );
+            
+             }
+             
+}
+        
+
