@@ -60,6 +60,7 @@ class _HomePageTodoState extends State<HomePageTodo> {
                 EdgeInsets.symmetric(vertical: 3.0, horizontal: 8.0),
             isThreeLine: true,
             onTap: () => _onTap(context, element, posicion),
+            leading: _typeIcon(element.type),
             title: Text('${element.title.toUpperCase()}',
                 style: Theme.of(context).primaryTextTheme.headline),
             subtitle: Text(
@@ -98,6 +99,19 @@ class _HomePageTodoState extends State<HomePageTodo> {
       return Colors.white;
     } else {
       return Colors.grey[300];
+    }
+  }
+
+  Icon _typeIcon(String type) {
+    switch (type) {
+      case "DEFAULT":
+        return Icon(Icons.check, size: 72.0);
+      case "CALL":
+        return Icon(Icons.call, size: 72.0);
+      case "HOME WORK":
+        return Icon(Icons.contacts, size: 72.0);
+      default:
+        return Icon(Icons.dialpad, size: 72.0);
     }
   }
 }

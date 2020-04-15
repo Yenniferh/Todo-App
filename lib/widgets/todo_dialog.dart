@@ -44,10 +44,10 @@ class _NewTodoDialogState extends State<NewTodoDialog> {
           onPressed: () {
             if (controllerBody.text != "" || controllerTitle.text != "") {
               final todo = new Todo(
-                title: controllerTitle.value.text,
-                body: controllerBody.value.text,
-                completed: 0,
-              );
+                  title: controllerTitle.value.text,
+                  body: controllerBody.value.text,
+                  completed: 0,
+                  type: dropSelected);
               Navigator.of(context).pop(todo);
             } else {
               Navigator.of(context).pop();

@@ -1,8 +1,8 @@
-
 class Todo {
   int id;
   String title;
   String body;
   int completed;
-  Todo({this.title, this.body, this.completed});
+  String type;
+  Todo({this.title, this.body, this.completed, this.type});
 }
